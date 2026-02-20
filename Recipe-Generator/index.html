@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChefAI - Il tuo Assistente di Cucina Intelligente</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fa-solid fa-hat-chef"></i> Chef<span>AI</span>
+        </div>
+        <ul class="nav-links">
+            <li class="active" onclick="showSection('home')" data-i18n="nav_home">Home</li>
+            <li onclick="showSection('pantry')" data-i18n="nav_pantry">Dispensa</li>
+            <li onclick="showSection('macros')" data-i18n="nav_macros">Macros</li>
+            <li onclick="showSection('mealplan')" data-i18n="nav_mealplan">Meal Plan</li>
+            <li onclick="showSection('about')" data-i18n="nav_about">Chi Siamo</li>
+        </ul>
+        <div class="lang-selector">
+            <select onchange="changeLanguage(this.value)" style="width: auto; padding: 0.5rem; border-color: var(--primary-color);">
+                <option value="it">🇮🇹 IT</option>
+                <option value="en">🇬🇧 EN</option>
+                <option value="de">🇩🇪 DE</option>
+            </select>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main id="main-container">
+
+        <!-- HOME SECTION -->
+        <section id="home" class="section active">
+            <div class="hero">
+                <h1 data-i18n="hero_title">Cucina. Monitora. <span class="highlight">Raggiungi.</span></h1>
+                <p data-i18n="hero_desc">La tua cucina intelligente. Genera ricette, traccia le calorie e pianifica i tuoi pasti con la potenza dell'IA.</p>
+                <button class="cta-button" onclick="showSection('pantry')" data-i18n="hero_btn">Inizia a Cucinare</button>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card" onclick="showSection('pantry')">
+                    <i class="fa-solid fa-basket-shopping"></i>
+                    <h3 data-i18n="feat_pantry_title">Pantry Chef</h3>
+                    <p data-i18n="feat_pantry_desc">Crea ricette con quello che hai in frigo.</p>
+                </div>
+                <div class="feature-card" onclick="showSection('macros')">
+                    <i class="fa-solid fa-scale-balanced"></i>
+                    <h3 data-i18n="feat_macro_title">Macros Chef</h3>
+                    <p data-i18n="feat_macro_desc">Analizza i nutrienti dei tuoi piatti.</p>
+                </div>
+                <div class="feature-card" onclick="showSection('mealplan')">
+                    <i class="fa-solid fa-calendar-days"></i>
+                    <h3 data-i18n="feat_plan_title">Meal Planner</h3>
+                    <p data-i18n="feat_plan_desc">Piani alimentari settimanali su misura.</p>
+                </div>
+                <div class="feature-card" onclick="showSection('master')">
+                    <i class="fa-solid fa-fire-burner"></i>
+                    <h3 data-i18n="feat_master_title">Master Chef</h3>
+                    <p data-i18n="feat_master_desc">Chiedi qualsiasi ricetta all'IA.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PANTRY CHEF SECTION -->
+        <section id="pantry" class="section">
+            <div class="section-header">
+                <h2><i class="fa-solid fa-basket-shopping"></i> <span data-i18n="pantry_title">Pantry Chef</span></h2>
+                <p data-i18n="pantry_subtitle">Compila i campi sottostanti per creare la tua ricetta perfetta.</p>
+            </div>
+            <div class="tool-container pantry-form">
+                
+                <!-- 1. Ingredienti -->
+                <div class="form-group">
+                    <label for="pantry-ingredients"><i class="fa-solid fa-carrot"></i> <span data-i18n="pantry_label_1">1. Aggiungi gli ingredienti che hai a casa</span></label>
+                    <input type="text" id="pantry-ingredients" placeholder="Es: uova, farina, latte, pomodori...">
+                </div>
+
+                <!-- 2. Pasto -->
+                <div class="form-group">
+                    <label for="pantry-meal-type"><i class="fa-solid fa-utensils"></i> <span data-i18n="pantry_label_2">2. Scegli quale pasto vuoi cucinare</span></label>
+                    <select id="pantry-meal-type">
+                        <option value="breakfast" data-i18n="opt_breakfast">Colazione</option>
+                        <option value="lunch" selected data-i18n="opt_lunch">Pranzo</option>
+                        <option value="dinner" data-i18n="opt_dinner">Cena</option>
+                        <option value="snack" data-i18n="opt_snack">Spuntino</option>
+                    </select>
+                </div>
+
+                <!-- 3. Utensili -->
+                <div class="form-group">
+                    <label><i class="fa-solid fa-blender"></i> <span data-i18n="pantry_label_3">3. Seleziona gli utensili disponibili</span></label>
+                    <div class="utensils-grid" id="utensils-container">
+                        <button type="button" class="utensil-btn" onclick="toggleUtensil(this)" data-value="forno"><i class="fa-solid fa-fire-burner"></i> Forno</button>
+                        <button type="button" class="utensil-btn" onclick="toggleUtensil(this)" data-value="microonde"><i class="fa-solid fa-microwave"></i> Microonde</button>
+                        <button type="button" class="utensil-btn" onclick="toggleUtensil(this)" data-value="frullatore"><i class="fa-solid fa-blender"></i> Frullatore</button>
+                        <button type="button" class="utensil-btn" onclick="toggleUtensil(this)" data-value="airfryer"><i class="fa-solid fa-wind"></i> Air Fryer</button>
+                        <button type="button" class="utensil-btn" onclick="toggleUtensil(this)" data-value="padella"><i class="fa-solid fa-layer-group"></i> Padella</button>
+                        <button type="button" class="utensil-btn" onclick="toggleUtensil(this)" data-value="pentola"><i class="fa-solid fa-spoon"></i> Pentola</button>
+                        <button type="button" class="utensil-btn" onclick="toggleUtensil(this)" data-value="tostapane"><i class="fa-solid fa-bread-slice"></i> Tostapane</button>
+                        <button type="button" class="utensil-btn" onclick="toggleUtensil(this)" data-value="griglia"><i class="fa-solid fa-grip-lines"></i> Griglia</button>
+                    </div>
+                    <input type="hidden" id="pantry-utensils">
+                </div>
+
+                <!-- 4. Tempo -->
+                <div class="form-group">
+                    <label for="pantry-time"><i class="fa-regular fa-clock"></i> <span data-i18n="pantry_label_4">4. Scegli quanto tempo hai a disposizione</span></label>
+                    <select id="pantry-time">
+                        <option value="15">15 min</option>
+                        <option value="30" selected>30 min</option>
+                        <option value="45">45 min</option>
+                        <option value="60">60+ min</option>
+                    </select>
+                </div>
+
+                <!-- 5. Abilità -->
+                <div class="form-group">
+                    <label for="pantry-skill"><i class="fa-solid fa-star"></i> <span data-i18n="pantry_label_5">5. Scegli il tuo livello di abilità</span></label>
+                    <select id="pantry-skill">
+                        <option value="beginner" data-i18n="opt_beginner">Principiante</option>
+                        <option value="intermediate" selected data-i18n="opt_intermediate">Intermedio</option>
+                        <option value="expert" data-i18n="opt_expert">Esperto</option>
+                    </select>
+                </div>
+
+                <!-- 6. Modalità Chef -->
+                <div class="form-group">
+                    <label><i class="fa-solid fa-hat-wizard"></i> <span data-i18n="pantry_label_6">6. Scegli la Modalità Chef desiderata</span></label>
+                    <div class="chef-modes">
+                        <label class="radio-card">
+                            <input type="radio" name="chef-mode" value="all-inclusive" checked>
+                            <span class="mode-title" data-i18n="mode_all_title">Tutto-Incluso</span>
+                            <span class="mode-desc" data-i18n="mode_all_desc">Usa solo i tuoi ingredienti</span>
+                        </label>
+                        <label class="radio-card">
+                            <input type="radio" name="chef-mode" value="gourmet">
+                            <span class="mode-title" data-i18n="mode_gourmet_title">Gourmet</span>
+                            <span class="mode-desc" data-i18n="mode_gourmet_desc">Usa anche ingredienti extra</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 7. Genera -->
+                <div class="form-cta">
+                    <p class="cta-desc" data-i18n="pantry_cta_desc">7. Premi il pulsante Genera e attendi che la magia accada.</p>
+                    <button class="action-btn" onclick="generatePantryRecipes()" data-i18n="btn_generate">Genera la tua Ricetta</button>
+                </div>
+            </div>
+            <div id="pantry-results" class="results-area"></div>
+        </section>
+
+        <!-- MACROS CHEF SECTION -->
+        <section id="macros" class="section">
+            <div class="section-header">
+                <h2><i class="fa-solid fa-scale-balanced"></i> <span data-i18n="macros_title">Macros Chef</span></h2>
+                <p data-i18n="macros_subtitle">Crea la ricetta perfetta basata sui tuoi obiettivi nutrizionali.</p>
+            </div>
+            <div class="tool-container pantry-form">
+                
+                <!-- 1. Macro Obiettivo -->
+                <div class="form-group">
+                    <label><i class="fa-solid fa-chart-pie"></i> <span data-i18n="macros_label_1">1. Seleziona il macro obiettivo</span></label>
+                    <p class="field-desc">Inserisci la quantità in grammi per il tuo pasto.</p>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <input type="number" id="macro-carbs" placeholder="Carboidrati (g)">
+                        <input type="number" id="macro-protein" placeholder="Proteine (g)">
+                        <input type="number" id="macro-fats" placeholder="Grassi (g)">
+                    </div>
+                </div>
+
+                <!-- 2. Pasto -->
+                <div class="form-group">
+                    <label for="macro-meal-type"><i class="fa-solid fa-utensils"></i> <span data-i18n="macros_label_2">2. Seleziona il pasto</span></label>
+                    <p class="field-desc">MacrosChef ti consiglierà una ricetta adatta.</p>
+                    <select id="macro-meal-type">
+                        <option value="breakfast" data-i18n="opt_breakfast">Colazione</option>
+                        <option value="lunch" selected data-i18n="opt_lunch">Pranzo</option>
+                        <option value="snack" data-i18n="opt_snack">Spuntino</option>
+                        <option value="dinner" data-i18n="opt_dinner">Cena</option>
+                    </select>
+                </div>
+
+                <!-- 3. Esigenze Dietetiche -->
+                <div class="form-group">
+                    <label for="macro-diet"><i class="fa-solid fa-leaf"></i> <span data-i18n="macros_label_3">3. Seleziona le tue esigenze dietetiche</span></label>
+                    <p class="field-desc">Scegli tra le varie opzioni disponibili.</p>
+                    <select id="macro-diet">
+                        <option value="none" selected data-i18n="opt_none">Nessuna</option>
+                        <option value="vegetarian" data-i18n="opt_vegetarian">Vegetariano</option>
+                        <option value="pescetarian" data-i18n="opt_pescetarian">Pescetariano</option>
+                        <option value="vegan" data-i18n="opt_vegan">Vegano</option>
+                        <option value="gluten-free" data-i18n="opt_gluten_free">Senza Glutine</option>
+                        <option value="lactose-free" data-i18n="opt_lactose_free">Senza Lattosio</option>
+                        <option value="keto" data-i18n="opt_keto">Keto</option>
+                        <option value="paleo" data-i18n="opt_paleo">Paleo</option>
+                    </select>
+                </div>
+
+                <!-- 4. Genera -->
+                <div class="form-cta">
+                    <p class="cta-desc" data-i18n="macros_cta_desc">4. Genera la tua Ricetta.</p>
+                    <button class="action-btn" onclick="generateMacroRecipes()" data-i18n="btn_generate">Genera la tua Ricetta</button>
+                    <p style="font-size: 0.8rem; color: #7f8c8d; margin-top: 1rem; line-height: 1.4;">
+                        Con un clic puoi salvare la tua ricetta nel Libro di Cucina o aggiungerla alla Lista della Spesa.
+                        E se desideri, puoi aggiungere tutti gli ingredienti al carrello AmazonFresh o InstaCart!
+                    </p>
+                </div>
+            </div>
+            <div id="macro-results" class="results-area"></div>
+        </section>
+
+        <!-- MEAL PLAN SECTION -->
+        <section id="mealplan" class="section">
+            <div class="section-header">
+                <h2><i class="fa-solid fa-calendar-days"></i> <span data-i18n="mealplan_title">MealPlan Chef</span></h2>
+                <p data-i18n="mealplan_subtitle">Piani alimentari su misura per il tuo stile di vita.</p>
+            </div>
+            <div class="tool-container pantry-form">
+                
+                <!-- 1. Dati Personali -->
+                <div class="form-group">
+                    <label><i class="fa-solid fa-user"></i> <span data-i18n="mealplan_label_1">1. Rendi il tuo Piano Alimentare personale</span></label>
+                    <p class="field-desc">Ogni Piano è personalizzato in base a Genere, Età e Misure.</p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                        <select id="plan-gender">
+                            <option value="male" data-i18n="opt_male">Uomo</option>
+                            <option value="female" data-i18n="opt_female">Donna</option>
+                        </select>
+                        <input type="number" id="plan-age" placeholder="Età">
+                        <input type="number" id="plan-height" placeholder="Altezza (cm)">
+                        <input type="number" id="plan-weight" placeholder="Peso (kg)">
+                    </div>
+                </div>
+
+                <!-- 2. Obiettivo -->
+                <div class="form-group">
+                    <label for="plan-goal"><i class="fa-solid fa-bullseye"></i> <span data-i18n="mealplan_label_2">2. Seleziona il tuo Obiettivo</span></label>
+                    <p class="field-desc">MealPlanChef ti consiglierà un piano adatto.</p>
+                    <select id="plan-goal">
+                        <option value="healthy" data-i18n="opt_healthy">Mangiare Sano</option>
+                        <option value="muscle" data-i18n="opt_muscle">Aumentare i Muscoli</option>
+                        <option value="weight-loss" data-i18n="opt_weight_loss">Perdita Peso</option>
+                    </select>
+                </div>
+
+                <!-- 3. Attività -->
+                <div class="form-group">
+                    <label for="plan-activity"><i class="fa-solid fa-person-running"></i> <span data-i18n="mealplan_label_3">3. Seleziona il livello di Attività</span></label>
+                    <p class="field-desc">Definisce il fabbisogno calorico corretto.</p>
+                    <select id="plan-activity">
+                        <option value="sedentary" data-i18n="opt_sedentary">Sedentario (Poco movimento)</option>
+                        <option value="light" data-i18n="opt_light">Leggermente Attivo (1-3 gg/sett)</option>
+                        <option value="moderate" data-i18n="opt_moderate">Moderatamente Attivo (3-5 gg/sett)</option>
+                        <option value="active" data-i18n="opt_active">Molto Attivo (6-7 gg/sett)</option>
+                    </select>
+                </div>
+
+                <!-- 4. Dieta -->
+                <div class="form-group">
+                    <label for="plan-diet"><i class="fa-solid fa-leaf"></i> <span data-i18n="mealplan_label_4">4. Seleziona le esigenze dietetiche</span></label>
+                    <p class="field-desc">Adatta il piano alle tue necessità.</p>
+                    <select id="plan-diet">
+                        <option value="none" selected data-i18n="opt_none">Nessuna</option>
+                        <option value="vegetarian" data-i18n="opt_vegetarian">Vegetariano</option>
+                        <option value="pescetarian" data-i18n="opt_pescetarian">Pescetariano</option>
+                        <option value="vegan" data-i18n="opt_vegan">Vegano</option>
+                        <option value="gluten-free" data-i18n="opt_gluten_free">Senza Glutine</option>
+                        <option value="lactose-free" data-i18n="opt_lactose_free">Senza Latticini</option>
+                        <option value="keto" data-i18n="opt_keto">Keto</option>
+                        <option value="paleo" data-i18n="opt_paleo">Paleo</option>
+                    </select>
+                </div>
+
+                <!-- 5. Durata -->
+                <div class="form-group">
+                    <label for="plan-duration"><i class="fa-regular fa-calendar"></i> <span data-i18n="mealplan_label_5">5. Seleziona la durata</span></label>
+                    <p class="field-desc">Weekend detox o piano settimanale?</p>
+                    <select id="plan-duration">
+                        <option value="3" data-i18n="opt_3_days">3 Giorni</option>
+                        <option value="5" data-i18n="opt_5_days">5 Giorni</option>
+                        <option value="7" selected data-i18n="opt_7_days">7 Giorni (Settimana)</option>
+                        <option value="14" data-i18n="opt_14_days">14 Giorni</option>
+                    </select>
+                </div>
+
+                <!-- 6. Genera -->
+                <div class="form-cta">
+                    <p class="cta-desc" data-i18n="mealplan_cta_desc">6. Genera il tuo Piano Alimentare.</p>
+                    <button class="action-btn" onclick="generateMealPlan()" data-i18n="btn_generate">Genera Piano</button>
+                    <p style="font-size: 0.8rem; color: #7f8c8d; margin-top: 1rem; line-height: 1.4;">
+                        Con un solo clic, puoi salvare il tuo piano pasti nel Ricettario o aggiungerlo alla Lista della Spesa.
+                        E se desideri, puoi aggiungere tutti gli ingredienti al carrello AmazonFresh o InstaCart!
+                    </p>
+                </div>
+            </div>
+            <div id="mealplan-results" class="results-area"></div>
+        </section>
+
+        <!-- MASTER CHEF SECTION -->
+        <section id="master" class="section">
+            <div class="section-header">
+                <h2><i class="fa-solid fa-fire-burner"></i> <span data-i18n="master_title">Master Chef</span></h2>
+                <p data-i18n="master_subtitle">Ispiratevi con i vostri gusti o con una ricetta specifica.</p>
+            </div>
+            <div class="tool-container pantry-form">
+                
+                <!-- 1. Ispirazione -->
+                <div class="form-group">
+                    <label for="master-input"><i class="fa-solid fa-lightbulb"></i> <span data-i18n="master_label_1">1. Ispirate MasterChef con i vostri gusti</span></label>
+                    <p class="field-desc">Vi va di mangiare una Lasagna al ragù d'agnello? O una zuppa di Kimchi?</p>
+                    <input type="text" id="master-input" placeholder="Es: Lasagna, Zuppa, Qualcosa di piccante...">
+                </div>
+
+                <!-- 2. Porzioni -->
+                <div class="form-group">
+                    <label for="master-servings"><i class="fa-solid fa-users"></i> <span data-i18n="master_label_2">2. Selezionate la quantità di porzioni</span></label>
+                    <p class="field-desc">State cucinando per voi stessi o per molti ospiti?</p>
+                    <input type="number" id="master-servings" min="1" value="2" placeholder="Numero di persone">
+                </div>
+
+                <!-- 3. Tempo -->
+                <div class="form-group">
+                    <label for="master-time"><i class="fa-regular fa-clock"></i> <span data-i18n="master_label_3">3. Scegliete quanto tempo avete a disposizione</span></label>
+                    <p class="field-desc">Impedirà di consigliarvi ricette che richiedono troppo tempo.</p>
+                    <select id="master-time">
+                        <option value="5" data-i18n="opt_5_min">5 min (Di fretta)</option>
+                        <option value="15" data-i18n="opt_15_min">15 min</option>
+                        <option value="30" data-i18n="opt_30_min">30 min</option>
+                        <option value="45" selected data-i18n="opt_45_min">45 min</option>
+                        <option value="60" data-i18n="opt_60_plus_min">60+ min</option>
+                    </select>
+                </div>
+
+                <!-- 4. Abilità -->
+                <div class="form-group">
+                    <label for="master-skill"><i class="fa-solid fa-star"></i> <span data-i18n="master_label_4">4. Selezionate il vostro livello di abilità</span></label>
+                    <p class="field-desc">MasterChef vi consiglierà ricette adatte al vostro livello.</p>
+                    <select id="master-skill">
+                        <option value="beginner" data-i18n="opt_beginner">Principiante</option>
+                        <option value="intermediate" selected data-i18n="opt_intermediate">Intermedio</option>
+                        <option value="expert" data-i18n="opt_expert">Esperto (Chef Stellato)</option>
+                    </select>
+                </div>
+
+                <!-- 5. Esigenze Alimentari -->
+                <div class="form-group">
+                    <label for="master-diet"><i class="fa-solid fa-leaf"></i> <span data-i18n="master_label_5">5. Selezionate le vostre esigenze alimentari</span></label>
+                    <p class="field-desc">Consigli per una ricetta adatta alla dieta selezionata.</p>
+                    <select id="master-diet">
+                        <option value="none" selected data-i18n="opt_none_all">Nessuna (Tutto)</option>
+                        <option value="vegetarian" data-i18n="opt_vegetarian">Vegetariano</option>
+                        <option value="pescetarian" data-i18n="opt_pescetarian">Pescetariano</option>
+                        <option value="vegan" data-i18n="opt_vegan">Vegano</option>
+                        <option value="gluten-free" data-i18n="opt_gluten_free">Senza Glutine</option>
+                        <option value="lactose-free" data-i18n="opt_lactose_free">Senza Lattosio</option>
+                        <option value="keto" data-i18n="opt_keto">Dieta Chetogenica</option>
+                        <option value="paleo" data-i18n="opt_paleo">Dieta Paleolitica</option>
+                    </select>
+                </div>
+
+                <!-- 6. Genera -->
+                <div class="form-cta">
+                    <p class="cta-desc" data-i18n="master_cta_desc">6. Genera la tua Ricetta.</p>
+                    <button class="action-btn" onclick="searchRecipe()" data-i18n="btn_generate">Genera la tua Ricetta</button>
+                </div>
+            </div>
+            <div id="master-results" class="results-area"></div>
+        </section>
+
+        <!-- ABOUT US SECTION -->
+        <section id="about" class="section">
+            <div class="about-container">
+                <div class="about-header">
+                    <h2><span data-i18n="about_title">La Nostra Storia</span> <i class="fa-solid fa-seedling"></i></h2>
+                    <p data-i18n="about_subtitle">Da un'idea scolastica a un assistente personale in cucina.</p>
+                </div>
+                
+                <div class="about-content">
+                    <div class="about-text">
+                        <h3 data-i18n="about_how_title">Come è nata l'idea?</h3>
+                        <p data-i18n="about_how_text_1">
+                            Tutto è iniziato tra i banchi di scuola a Baden. Ci siamo chiesti: "Perché sprechiamo così tanto cibo solo perché non sappiamo cosa cucinare?" 
+                            Spesso apriamo il frigo, vediamo ingredienti sparsi e finiamo per ordinare una pizza. Volevamo cambiare questo.
+                        </p>
+                        <p data-i18n="about_how_text_2">
+                            Ispirati dalle potenzialità dell'Intelligenza Artificiale, abbiamo deciso di creare <strong>ChefAI</strong>. 
+                            Non è solo un sito di ricette, ma un vero compagno che ti aiuta a svuotare il frigo, mangiare sano e risparmiare tempo.
+                        </p>
+                        
+                        <h3 data-i18n="about_mission_title">La nostra missione</h3>
+                        <ul class="mission-list">
+                            <li><i class="fa-solid fa-check"></i> <span data-i18n="mission_1">Ridurre lo spreco alimentare domestico.</span></li>
+                            <li><i class="fa-solid fa-check"></i> <span data-i18n="mission_2">Rendere la cucina sana accessibile a tutti.</span></li>
+                            <li><i class="fa-solid fa-check"></i> <span data-i18n="mission_3">Semplificare la pianificazione dei pasti.</span></li>
+                        </ul>
+                    </div>
+                    <div class="about-image">
+                        <img src="https://source.unsplash.com/random/600x400/?cooking,team" alt="Il nostro team al lavoro">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- RECIPE MODAL -->
+        <div id="recipe-modal" class="modal hidden">
+            <div class="modal-overlay" onclick="closeModal()"></div>
+            <div class="modal-content">
+                <button class="close-modal-btn" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+                <div id="modal-body">
+                    <!-- Dynamic Content -->
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
