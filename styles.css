@@ -1,0 +1,744 @@
+@font-face {
+    font-family: 'Black Brave';
+    src: url('BlackBrave-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+:root {
+    --primary-color: #007bff; /* Blue */
+    --secondary-color: #0a0a0a; /* Black/Dark Background */
+    --text-color: #ffffff;
+    --card-bg: #1a1a1a;
+    --accent-hover: #0056b3;
+    --font-heading: 'Oswald', sans-serif;
+    --font-body: 'Roboto', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-body);
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+h1, h2, h3 {
+    font-family: var(--font-heading);
+    text-transform: uppercase;
+}
+
+/* Header */
+header {
+    background-color: #000;
+    padding: 20px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 2px solid var(--primary-color);
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo h1 {
+    font-family: 'Black Brave', sans-serif;
+    font-size: 3rem; 
+    color: #fff;
+    letter-spacing: 2px;
+    font-weight: normal;
+}
+
+.logo .accent {
+    color: var(--primary-color);
+}
+
+nav {
+    display: flex;
+    align-items: center;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+}
+
+nav ul li {
+    margin-left: 20px;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: var(--primary-color);
+}
+
+.btn-nav {
+    border: 2px solid var(--primary-color);
+    padding: 8px 20px;
+    border-radius: 5px;
+}
+
+/* Language Selector */
+.lang-selector {
+    margin-right: 20px;
+}
+
+.lang-selector select {
+    background-color: transparent;
+    border: 1px solid #fff;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: var(--font-body);
+}
+
+.lang-selector select option {
+    background-color: #000;
+    color: #fff;
+}
+
+
+
+/* Hero Section */
+.hero {
+    height: 80vh;
+    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1585747860715-2ba37e788b70?ixlib=rb-1.2.1&auto=format&fit=crop&w=1353&q=80');
+    background-size: cover;
+    /* Old hero styles removed/overwritten */
+    display: none; 
+}
+
+/* NEW Dynamic Hero Section */
+.hero {
+    height: 100vh;
+    background: linear-gradient(-45deg, #ffffff, #e6f2ff, #007bff, #0056b3);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    /* Move behind header */
+    margin-top: -85px; 
+    padding-top: 85px;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.hero-logo {
+    width: 600px;
+    max-width: 90%;
+    height: auto;
+    margin-bottom: 10px;
+    animation: fadeInDown 1.5s ease-out;
+    filter: drop-shadow(2px 2px 4px rgba(255,255,255,0.5));
+}
+
+.hero-title {
+    font-family: 'Black Brave', sans-serif;
+    font-size: 8rem; 
+    color: #000; /* Black text */
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(255,255,255,0.5);
+    animation: fadeInDown 1.5s ease-out;
+}
+
+.hero-subtitle {
+    font-family: 'Oswald', sans-serif;
+    font-size: 2rem;
+    color: #333;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    margin-bottom: 50px;
+    animation: fadeInUp 1.5s ease-out 0.5s backwards;
+}
+
+.hero-content {
+    z-index: 1;
+}
+
+/* Animations */
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-50px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(50px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.btn-main {
+    display: inline-block;
+    background-color: #000;
+    color: #fff;
+    padding: 15px 40px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 30px;
+    transition: all 0.3s;
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    animation: fadeInUp 1.5s ease-out 1s backwards;
+}
+
+.btn-main:hover {
+    background-color: var(--primary-color);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0,123,255,0.3);
+}
+
+
+/* Welcome Section */
+.welcome-section {
+    padding: 60px 0;
+    background-color: var(--secondary-color);
+    text-align: center;
+}
+
+.welcome-text {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.welcome-text h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: var(--primary-color);
+}
+
+.welcome-text p {
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+    color: #ccc;
+}
+
+/* Gallery Section */
+.gallery {
+    padding: 60px 0;
+    background-color: #121212;
+}
+
+.gallery h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+    color: #fff;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: 250px;
+    gap: 20px;
+    padding: 0 10px;
+}
+
+.gallery-grid img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+    transition: all 0.5s ease;
+    filter: brightness(0.9);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+
+.gallery-grid img:hover {
+    transform: scale(1.02);
+    filter: brightness(1.1);
+    z-index: 2;
+    box-shadow: 0 10px 25px rgba(0, 123, 255, 0.4);
+}
+
+/* "Wow" Layout for 4 images */
+.gallery-grid img:nth-child(1) {
+    grid-column: span 2;
+    grid-row: span 2;
+}
+
+.gallery-grid img:nth-child(2) {
+    grid-column: span 1;
+    grid-row: span 1;
+}
+
+.gallery-grid img:nth-child(3) {
+    grid-column: span 1;
+    grid-row: span 1;
+}
+
+.gallery-grid img:nth-child(4) {
+    grid-column: span 3;
+    grid-row: span 1;
+    height: 300px;
+    object-position: center 30%; /* Adjust focus */
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .gallery-grid {
+        grid-template-columns: 1fr;
+        grid-auto-rows: 300px;
+    }
+
+    .gallery-grid img:nth-child(1),
+    .gallery-grid img:nth-child(2),
+    .gallery-grid img:nth-child(3),
+    .gallery-grid img:nth-child(4) {
+        grid-column: span 1;
+        grid-row: span 1;
+    }
+}
+
+
+.btn-main {
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: #fff;
+    padding: 15px 30px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background 0.3s;
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+}
+
+.btn-main:hover {
+    background-color: var(--accent-hover);
+}
+
+/* Services */
+.services {
+    padding: 80px 0;
+    background-color: #121212;
+}
+
+.services h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 50px;
+    color: var(--primary-color);
+}
+
+.service-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+}
+
+.service-card {
+    background-color: var(--card-bg);
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: 1px solid #333;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 123, 255, 0.2);
+    border-color: var(--primary-color);
+}
+
+.service-card i {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+.service-card h3 {
+    margin-bottom: 15px;
+}
+
+.service-card .price {
+    display: block;
+    margin-top: 15px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #fff;
+}
+
+/* Booking Section */
+.booking {
+    padding: 80px 0;
+}
+
+.booking h2 {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 2.5rem;
+}
+
+form {
+    max-width: 900px; /* Increased width for new layout */
+    margin: 0 auto;
+    background-color: var(--card-bg);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+.booking-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.form-section h3 {
+    margin-bottom: 20px;
+    color: var(--primary-color);
+    border-bottom: 1px solid #333;
+    padding-bottom: 10px;
+}
+
+/* Service Selection Buttons */
+.service-selection-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.service-option {
+    background-color: #2a2a2a;
+    border: 1px solid #444;
+    padding: 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.service-option:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+.service-option.selected {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: #fff;
+    box-shadow: 0 0 15px rgba(0, 123, 255, 0.4);
+}
+
+.service-option .service-name {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.service-option .service-price {
+    font-size: 1rem;
+    color: #ccc;
+}
+
+.service-option.selected .service-price {
+    color: #fff;
+}
+
+.hidden-section {
+    opacity: 0.5;
+    pointer-events: none;
+    /* We don't hide it completely to show the user what's coming, strictly speaking 'display: none' works too but opacity hints steps */
+}
+
+/* Custom Calendar Layout */
+.calendar-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+@media (min-width: 768px) {
+    .calendar-layout {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+}
+
+/* Calendar Styles */
+.calendar-container {
+    background-color: #fff; /* Light theme for calendar as requested/implied */
+    color: #333;
+    border-radius: 8px;
+    padding: 15px;
+    flex: 1;
+    min-width: 300px;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.calendar-header h4 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-family: var(--font-body); /* More standard font for calendar */
+    font-weight: bold;
+}
+
+.calendar-header button {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: #555;
+}
+
+.calendar-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-size: 0.8rem;
+    color: #888;
+    margin-bottom: 10px;
+}
+
+.calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+}
+
+.calendar-day {
+    padding: 10px 5px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    transition: background 0.2s;
+}
+
+.calendar-day:hover:not(.disabled) {
+    background-color: #f0f0f0;
+}
+
+.calendar-day.selected {
+    background-color: #000; /* Black for selected as per image */
+    color: #fff;
+    font-weight: bold;
+}
+
+.calendar-day.disabled {
+    color: #ccc;
+    cursor: not-allowed;
+    text-decoration: line-through;
+}
+
+.calendar-day.today {
+    border: 1px solid #000;
+}
+
+/* Time Slots Styles */
+.time-slots-container {
+    flex: 1;
+    padding: 15px;
+    background-color: #2a2a2a; /* Keep dark to blend with form, or make light? Let's make it distinct */
+    border-radius: 8px;
+    min-height: 300px;
+}
+
+.time-slots-container h4 {
+    margin-bottom: 20px;
+    color: #fff;
+    font-family: var(--font-body);
+}
+
+.time-slots-grid {
+    display: flex; /* Or grid */
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.time-btn {
+    background-color: transparent;
+    border: 1px solid #555;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 1rem;
+    flex: 1 0 30%; /* grow, shrink, basis */
+    max-width: 120px;
+    text-align: center;
+}
+
+.time-btn:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.time-btn.selected {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: #fff;
+}
+
+.placeholder-text {
+    color: #777;
+    font-style: italic;
+    width: 100%;
+    text-align: center;
+    margin-top: 50px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #ccc;
+}
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    background-color: #2a2a2a;
+    border: 1px solid #444;
+    color: #fff;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.phone-input-group {
+    display: flex;
+    gap: 10px;
+}
+
+.phone-prefix {
+    width: auto;
+    min-width: 110px;
+    flex-shrink: 0;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 15px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-submit:hover {
+    background-color: var(--accent-hover);
+}
+
+.hidden {
+    display: none;
+}
+
+#confirmationMessage {
+    text-align: center;
+    background-color: rgba(40, 167, 69, 0.2);
+    border: 1px solid #28a745;
+    padding: 20px;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+#confirmationMessage i {
+    font-size: 3rem;
+    color: #28a745;
+    margin-bottom: 10px;
+}
+
+/* Footer */
+footer {
+    background-color: #000;
+    padding: 30px 0;
+    text-align: center;
+    border-top: 1px solid #333;
+    margin-top: 50px;
+}
+
+.socials {
+    margin-top: 15px;
+}
+
+.socials a {
+    color: #fff;
+    margin: 0 10px;
+    font-size: 1.5rem;
+    transition: color 0.3s;
+}
+
+.socials a:hover {
+    color: var(--primary-color);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    .hero-title {
+        font-size: 4rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.2rem;
+    }
+
+    .form-group-row {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    nav ul {
+        display: none; /* simple hide for mobile, normally would use a hamburger menu */
+    }
+    
+    .logo {
+        margin: 0 auto;
+    }
+}
