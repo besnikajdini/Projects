@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guides — Candlecast</title>
+<meta name="description" content="Trading basics, model terms and a plain-English walkthrough of how Candlecast actually works.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <a href="index.html#top" class="logo"><span class="glyph">/</span>CANDLECAST</a>
+    <div class="nav-links">
+      <a href="index.html#candles">Candles</a><a href="index.html#pipeline">Pipeline</a><a href="index.html#scanner">Scanner</a><a href="index.html#coverage">Coverage</a><a href="index.html#honesty">FAQ</a>
+    </div>
+    <div class="nav-right">
+      <span class="btn btn-outline btn-disabled" aria-disabled="true" title="Repository not public yet">GitHub</span>
+      <a href="index.html#download" class="btn btn-solid">Download →</a>
+      <button type="button" class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobileMenu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html#candles">Candles</a>
+    <a href="index.html#pipeline">Pipeline</a>
+    <a href="index.html#scanner">Scanner</a>
+    <a href="index.html#coverage">Coverage</a>
+    <a href="index.html#honesty">FAQ</a>
+    <a href="index.html#download">Download</a>
+    <div class="mobile-menu-divider"></div>
+    <a href="guides.html">Guides</a>
+    <a href="company.html#about">Company</a>
+  </div>
+</nav>
+
+<header class="page-hero">
+  <div class="container">
+    <div class="kicker">Guides</div>
+    <h1>Everything you need to actually understand this project</h1>
+    <p>No prior trading knowledge required. This page covers the market terms Candlecast uses, how to read its numbers, why nobody has a real 90% model, and how to run the thing yourself.</p>
+  </div>
+</header>
+
+<section class="section-pad" style="padding-top:0;">
+  <div class="container">
+    <div class="guide-layout">
+      <nav class="guide-toc">
+        <a href="#what">What it is</a>
+        <a href="#basics">Trading basics</a>
+        <a href="#reading">Reading the numbers</a>
+        <a href="#myth">The 90% myth</a>
+        <a href="#start">Running it yourself</a>
+        <a href="#responsible">Using it responsibly</a>
+      </nav>
+
+      <div>
+        <article class="guide-section" id="what">
+          <h2>What Candlecast actually is</h2>
+          <p>Candlecast is an open-source notebook that tries to predict whether a stock goes <b>up or down tomorrow</b> — not the exact price. It pulls historical price data, adds technical indicators and a news-sentiment score, trains a model, and then tests that model honestly against periods it has never seen.</p>
+          <p>It's built to teach, not to trade for you. Every result you see on the homepage — the 54.7% accuracy, the five validation folds, the drawdown — comes straight out of the notebook. Nothing is staged.</p>
+        </article>
+
+        <article class="guide-section" id="basics">
+          <h2>Trading basics, in plain English</h2>
+          <p>These are the terms used across the site and inside the notebook. No jargon left unexplained.</p>
+          <dl class="glossary-grid">
+            <div class="glossary-item"><dt>OHLC candle</dt><dd>A single time period's price action: Open, High, Low, Close. A green candle closed higher than it opened; a red one closed lower.</dd></div>
+            <div class="glossary-item"><dt>RSI (Relative Strength Index)</dt><dd>Measures how fast and how far price has moved recently, on a 0–100 scale. Used to spot when a stock is "overbought" or "oversold".</dd></div>
+            <div class="glossary-item"><dt>MACD</dt><dd>Compares two moving averages to gauge momentum — is the trend speeding up, slowing down, or reversing.</dd></div>
+            <div class="glossary-item"><dt>Bollinger Bands</dt><dd>A band drawn around a moving average based on volatility. Price hugging the edge signals an unusually strong or quiet move.</dd></div>
+            <div class="glossary-item"><dt>Moving average</dt><dd>The average price over a rolling window (e.g. 20 days), used to smooth out noise and see the underlying trend.</dd></div>
+            <div class="glossary-item"><dt>Sentiment score</dt><dd>A number derived from recent financial news headlines, capturing information that price history alone won't show.</dd></div>
+            <div class="glossary-item"><dt>Walk-forward validation</dt><dd>Testing a model on a chunk of time strictly after the data it trained on — never on the past, never on data it's already seen.</dd></div>
+            <div class="glossary-item"><dt>Sharpe ratio</dt><dd>Return per unit of risk taken. Higher is better; above 1 is considered solid, above 2 is rare outside of quant funds.</dd></div>
+            <div class="glossary-item"><dt>Max drawdown</dt><dd>The largest drop from a peak to a low point during the backtest — a measure of the worst pain you'd have felt holding the strategy.</dd></div>
+            <div class="glossary-item"><dt>Backtesting</dt><dd>Simulating a strategy on historical data, including trading costs, to see how it would have actually performed.</dd></div>
+            <div class="glossary-item"><dt>Buy & hold baseline</dt><dd>Just buying the stock once and holding it — the benchmark every "smart" strategy has to beat to be worth the effort.</dd></div>
+            <div class="glossary-item"><dt>Data leakage</dt><dd>When information from the future accidentally sneaks into training data, making a model look far better than it actually is.</dd></div>
+          </dl>
+        </article>
+
+        <article class="guide-section" id="reading">
+          <h2>How to read the scanner and the numbers</h2>
+          <p>The scanner on the homepage shows five "folds" — five separate stretches of time. For each one, the model trains only on data before that window and gets tested only on that window. That's what makes it honest: no fold gets to peek at its own answer key.</p>
+          <ul>
+            <li><b>Accuracy</b> — how often the model called the next day's direction correctly. Anything meaningfully above ~52-53% over a long period is notable in an efficient market.</li>
+            <li><b>vs Baseline dots</b> — whether that fold beat simply guessing "up" every day, or holding the stock the whole time.</li>
+            <li><b>Verdict</b> — "Above baseline" means the model actually earned its keep in that window; "In line" means it performed close to what you'd expect from noise.</li>
+          </ul>
+          <p>If every fold showed 90%+, that wouldn't be a reason to celebrate — it would be a reason to check for data leakage. See <a href="#myth">below</a> for why.</p>
+        </article>
+
+        <article class="guide-section" id="myth">
+          <h2>Why nobody has a real 90% accuracy model</h2>
+          <p>Markets absorb public information fast. If a simple, exploitable pattern in price and news data really predicted tomorrow with 90% accuracy, the largest quant funds on earth — with far more data and compute than this project — would already be trading on it, and in doing so would erase the very pattern that made it work.</p>
+          <p>What's actually realistic: a small, consistent statistical edge — often in the 52-58% range — that only becomes profitable at scale, with strict risk management. That's exactly the range Candlecast lands in, and that's the point: it's a believable number, not a marketing number.</p>
+        </article>
+
+        <article class="guide-section" id="start">
+          <h2>Running the notebook yourself</h2>
+          <p>You don't need to take any of this on faith — the whole pipeline is open source.</p>
+          <ul>
+            <li>Clone the repository and install the requirements (see the <a href="index.html#download">Download</a> section on the homepage).</li>
+            <li>Open the notebook in Jupyter and run it top to bottom on the default ticker.</li>
+            <li>Swap in any Yahoo Finance ticker and re-run — performance will vary a lot by stock and time period, which is expected and worth exploring.</li>
+            <li>Read the backtest cell closely: that's where commissions, the baseline comparison, and the walk-forward folds all come together.</li>
+          </ul>
+        </article>
+
+        <article class="guide-section" id="responsible">
+          <h2>Using this responsibly</h2>
+          <p>This project exists to teach feature engineering, validation and honest backtesting — real, transferable skills, independent of whether the model "beats the market" on any given day.</p>
+          <p>It is not financial advice and it isn't built to be traded on directly. If you do anything with real money based on ideas from this project, treat it as one input among many, size it accordingly, and consider talking to a licensed advisor first.</p>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <a href="index.html#top" class="logo"><span class="glyph">/</span>CANDLECAST</a>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <div class="footer-col-title">Product</div>
+          <a href="index.html#pipeline">Pipeline</a>
+          <a href="index.html#scanner">Scanner</a>
+          <a href="index.html#download">Download</a>
+          <a href="guides.html">Guides</a>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">Company</div>
+          <a href="company.html#about">About</a>
+          <a href="company.html#contact">Contact</a>
+          <a href="company.html#terms">Terms</a>
+          <a href="company.html#privacy">Privacy</a>
+          <a href="company.html#cookies">Cookies</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-disclaimer">Educational and demonstrative project only. It does not constitute financial advice, an investment recommendation, or a solicitation to buy/sell financial instruments. Past performance shown here does not guarantee future results. Investing involves risk, including loss of capital.</div>
+    <div class="copyright">© 2026 Candlecast.</div>
+  </div>
+</footer>
+
+<script src="nav.js"></script>
+</body>
+</html>

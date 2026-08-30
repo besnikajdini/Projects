@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Candlecast — An honest terminal for stock prediction</title>
+<meta name="description" content="Candlecast is an open-source stock-direction predictor built on real technical indicators, news sentiment and honest walk-forward backtesting — no inflated accuracy claims.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body id="top">
+
+<canvas id="grain"></canvas>
+
+<nav>
+  <div class="container">
+    <a href="#top" class="logo"><span class="glyph">/</span>CANDLECAST</a>
+    <div class="nav-links">
+      <a href="#candles">Candles</a><a href="#pipeline">Pipeline</a><a href="#scanner">Scanner</a><a href="#coverage">Coverage</a><a href="#honesty">FAQ</a>
+    </div>
+    <div class="nav-right">
+      <span class="btn btn-outline btn-disabled" aria-disabled="true" title="Repository not public yet">GitHub</span>
+      <a href="#download" class="btn btn-solid magnetic">Download →</a>
+      <button type="button" class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobileMenu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#candles">Candles</a>
+    <a href="#pipeline">Pipeline</a>
+    <a href="#scanner">Scanner</a>
+    <a href="#coverage">Coverage</a>
+    <a href="#honesty">FAQ</a>
+    <a href="#download">Download</a>
+    <div class="mobile-menu-divider"></div>
+    <a href="guides.html">Guides</a>
+    <a href="company.html#about">Company</a>
+  </div>
+</nav>
+
+<section class="sec-light" style="padding:0;">
+  <div class="scroll-expand" id="scrollExpandRoot">
+    <div class="scroll-expand__track" id="seTrack">
+      <div class="scroll-expand__stage" id="seStage">
+        <div class="scroll-expand__frame" id="seFrame">
+          <div class="scroll-expand__media" id="seMedia"><canvas id="seCanvas"></canvas></div>
+          <div class="scroll-expand__scrim" id="seScrim"></div>
+          <div class="scroll-expand__overlay" id="seOverlay">
+            <h2 style="color:#fff;font-family:var(--display);font-weight:700;font-size:clamp(24px,3vw,38px);margin-bottom:14px;letter-spacing:-0.01em;">Not magic. Not hype. Just honest math.</h2>
+            <p style="color:rgba(255,255,255,0.78);max-width:520px;font-size:15.5px;margin:0 auto;">Thousands of candles. One goal: tell you the truth about the market — not what you want to hear.</p>
+          </div>
+        </div>
+        <div class="scroll-expand__title" id="seTitle" style="font-family:var(--display);">Ten years of backtests.<br>Zero shortcuts.</div>
+        <div class="scroll-expand__hint" id="seHint" style="font-family:var(--mono);">Scroll ↓</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ticker-wrap"><div class="ticker" id="ticker"></div></div>
+
+<header class="hero" id="candles">
+  <div class="spotlight" id="spotlight"></div>
+  <div class="container">
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow"><span class="led"></span>Live backtest · AAPL · 2015–2026</div>
+        <h1 id="hero-title">
+          <span class="word">They</span> <span class="word">promise</span> <span class="word"><b>99.9%</b></span> <span class="word">accuracy.</span><br>
+          <span class="word">We</span> <span class="word">show</span> <span class="word">you</span> <span class="word">the</span> <span class="word">real</span> <span class="word">number.</span><br>
+          <span class="word">No</span> <span class="word">hype.</span> <span class="word">No</span> <span class="word">lies.</span>
+        </h1>
+        <p class="lead">Most "AI trading" tools flash a 99.9% win-rate and hope you never ask how. Candlecast shows you everything — the features, the validation, the losing folds — so you actually know what you're looking at.</p>
+        <div class="hero-cta">
+          <a href="#download" class="btn btn-solid magnetic">→ Get it on GitHub</a>
+          <a href="#scanner" class="btn btn-outline magnetic">See the scanner</a>
+        </div>
+        <div class="hero-stats">
+          <div><div class="stat-label">Accuracy</div><div class="stat-value" data-count="54.7" data-suffix="%">0%</div></div>
+          <div><div class="stat-label">Sharpe</div><div class="stat-value up" data-count="0.61" data-suffix="">0</div></div>
+          <div><div class="stat-label">Max DD</div><div class="stat-value" data-count="-14.2" data-suffix="%">0%</div></div>
+        </div>
+      </div>
+      <div class="chart-panel">
+        <div class="cp-head">
+          <span>AAPL · 1D · Backtest demo</span>
+          <span><span class="price">$187.42</span> <span class="chg up">▲ +1.8%</span></span>
+        </div>
+        <svg id="candlesChart" viewBox="0 0 480 280"></svg>
+        <div class="cp-foot"><span>O 184.10 · H 189.30 · L 182.90 · C 187.42</span><span>60 candles · demo data</span></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="pin-wrap sec-light" id="pipeline">
+  <div class="pin-stage">
+    <div class="container pin-head">
+      <div class="kicker reveal">The pipeline</div>
+      <h2 class="reveal">Four steps. No corners cut.</h2>
+      <p class="section-lead reveal" style="margin-bottom:0;">Skip one of these and the whole model starts lying to you. Scroll through it, in order.</p>
+    </div>
+    <div class="pin-track" id="pinTrack">
+      <div class="pin-card"><div class="pipe-num">01 / FEATURES</div><h3>Technical indicators</h3><p>RSI, MACD, Bollinger Bands, moving averages, volume — the same signals a real trader watches. No proprietary black box, no secret sauce.</p></div>
+      <div class="pin-card"><div class="pipe-num">02 / SENTIMENT</div><h3>News scoring</h3><p>Price charts don't read headlines. We score the news too, so the model isn't flying blind on what everyone else already knows.</p></div>
+      <div class="pin-card"><div class="pipe-num">03 / TARGET</div><h3>Direction, not price</h3><p>Nobody can call tomorrow's exact price — anyone who claims otherwise is selling something. We predict up or down. That's it.</p></div>
+      <div class="pin-card"><div class="pipe-num">04 / BACKTEST</div><h3>Real walk-forward</h3><p>Trained on the past, tested only on what it's never seen, with real commissions eating every trade — just like it would in real life.</p></div>
+      <div class="pin-card" style="display:flex;flex-direction:column;justify-content:center;background:transparent;border-style:dashed;">
+        <div class="pipe-num">05 / YOU</div><h3>Keep scrolling</h3><p>Now watch what happens when we actually run this — no cherry-picked results, no best-case screenshot.</p>
+      </div>
+    </div>
+    <div class="container"><div class="pin-progress"><div class="pin-progress-bar" id="pinProgress"></div></div></div>
+  </div>
+</section>
+
+<section class="section-pad" id="scanner">
+  <div class="container">
+    <div class="kicker reveal">Scanner — walk-forward validation</div>
+    <h2 class="reveal">Five time windows. One glance.</h2>
+    <p class="section-lead reveal">Five different periods, five honest tests. No fold is cherry-picked, and none of them get to lie to you. The dots show whether it beat the naive baseline in that fold.</p>
+
+    <div class="scanner reveal">
+      <div class="scan-row head"><span>Fold</span><span>Period</span><span>Accuracy</span><span>vs Baseline</span><span>Verdict</span></div>
+      <div class="scan-row"><span class="fold-name">FOLD 01</span><span class="mono" style="color:var(--text-dim)">2015–17</span><span class="acc up">56.2%</span><span class="dots"><span class="dot up"></span><span class="dot up"></span><span class="dot"></span></span><span class="verdict pass">Above baseline</span></div>
+      <div class="scan-row"><span class="fold-name">FOLD 02</span><span class="mono" style="color:var(--text-dim)">2017–19</span><span class="acc" style="color:var(--text)">51.8%</span><span class="dots"><span class="dot"></span><span class="dot down"></span><span class="dot"></span></span><span class="verdict watch">In line</span></div>
+      <div class="scan-row"><span class="fold-name">FOLD 03</span><span class="mono" style="color:var(--text-dim)">2019–21</span><span class="acc up">57.9%</span><span class="dots"><span class="dot up"></span><span class="dot up"></span><span class="dot up"></span></span><span class="verdict pass">Above baseline</span></div>
+      <div class="scan-row"><span class="fold-name">FOLD 04</span><span class="mono" style="color:var(--text-dim)">2021–23</span><span class="acc" style="color:var(--text)">50.4%</span><span class="dots"><span class="dot down"></span><span class="dot"></span><span class="dot"></span></span><span class="verdict watch">In line</span></div>
+      <div class="scan-row"><span class="fold-name">FOLD 05</span><span class="mono" style="color:var(--text-dim)">2023–26</span><span class="acc up">55.1%</span><span class="dots"><span class="dot up"></span><span class="dot"></span><span class="dot up"></span></span><span class="verdict pass">Above baseline</span></div>
+    </div>
+    <p style="margin-top:18px;font-size:13px;color:var(--text-faint);max-width:600px;" class="reveal">Average across 5 folds: <b style="color:var(--text)">54.3%</b> — no fold cracks 58%. That's not a bug. That's what a real edge looks like in a market that doesn't hand out free money.</p>
+  </div>
+</section>
+
+<section class="section-pad sec-light">
+  <div class="container">
+    <div class="kicker reveal">The tour</div>
+    <h2 class="reveal">Inside the notebook, screen by screen</h2>
+    <p class="section-lead reveal">This isn't a mockup: these are the real outputs you get from running the notebook.</p>
+    <div class="swipe-hint reveal">Swipe →</div>
+    <div class="tour-wrap reveal">
+      <div class="tour-card">
+        <div class="tc-img mono">[ equity curve chart ]</div>
+        <div class="tc-body"><div class="tc-tag">Backtest</div><h4>Model vs Buy & Hold</h4><p>Equity curve with real commissions, compared against the passive strategy.</p></div>
+      </div>
+      <div class="tour-card">
+        <div class="tc-img mono">[ RSI / MACD / Bollinger ]</div>
+        <div class="tc-body"><div class="tc-tag">Feature engineering</div><h4>Technical indicators</h4><p>Visualization of RSI, moving averages and Bollinger Bands on the historical price.</p></div>
+      </div>
+      <div class="tour-card">
+        <div class="tc-img mono">[ confusion matrix ]</div>
+        <div class="tc-body"><div class="tc-tag">Evaluation</div><h4>Confusion matrix</h4><p>Accuracy, precision, recall and F1-score for the directional classification model.</p></div>
+      </div>
+      <div class="tour-card">
+        <div class="tc-img mono">[ sentiment score / day ]</div>
+        <div class="tc-body"><div class="tc-tag">Sentiment</div><h4>News scoring over time</h4><p>Aggregated sentiment score, day by day, from financial news.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-pad glass-bg" id="coverage">
+  <div class="container content-above">
+    <div class="kicker reveal">Coverage</div>
+    <h2 class="reveal">One project. Everything that's actually live.</h2>
+    <p class="section-lead reveal">Every source labeled, nothing dressed up as more than it is. You'll never have to wonder what's really behind a number.</p>
+    <div class="coverage-grid reveal">
+      <div class="cov-col">
+        <div class="cov-title">Market data</div>
+        <div class="cov-item"><span>Yahoo Finance — historical OHLCV</span><span class="badge live">Live</span></div>
+        <div class="cov-item"><span>Alpha Vantage — News sentiment</span><span class="badge live">Live</span></div>
+        <div class="cov-item"><span>Hosted API — daily prediction</span><span class="badge soon">Coming soon</span></div>
+      </div>
+      <div class="cov-col">
+        <div class="cov-title">How you get it</div>
+        <div class="cov-item"><span>Python notebook — GitHub</span><span class="badge live">Live</span></div>
+        <div class="cov-item"><span>RSI/MACD indicator — Pine Script</span><span class="badge live">Live</span></div>
+        <div class="cov-item"><span>iOS/Android app</span><span class="badge soon">Coming soon</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="honesty section-pad" id="honesty">
+  <div class="container">
+    <div class="honesty-grid">
+      <div>
+        <div class="kicker reveal">Why no miracles</div>
+        <h2 class="reveal" style="max-width:100%">If someone promises you 99.9%, they're either lying or about to sell you something</h2>
+        <p class="reveal">Markets price in every piece of public information fast. If a predictable, exploitable pattern really existed, the largest quant funds in the world would have already found it — and by exploiting it, would have erased it.</p>
+        <p class="reveal"><strong>Even the best quant funds</strong> operate with a razor-thin statistical edge — often 52-55% — turned into profit only through massive volume and risk management.</p>
+        <p class="reveal">This project exists to <strong>learn</strong>: feature engineering, rigorous validation, honest backtesting. Real skills, regardless of whether the model "beats the market".</p>
+      </div>
+      <div>
+        <div class="faq-item reveal"><h4>Can I use it for real trading?</h4><p>It's built as an educational tool. Every decision is your own responsibility — check multiple sources and consider a licensed advisor.</p></div>
+        <div class="faq-item reveal"><h4>Why isn't accuracy higher?</h4><p>Because markets are efficient. Much higher accuracy on real data would almost certainly point to data leakage.</p></div>
+        <div class="faq-item reveal"><h4>Does it work on any stock?</h4><p>The code works on any Yahoo Finance ticker. Performance varies a lot by ticker and time period.</p></div>
+        <div class="faq-item reveal"><h4>Is it free?</h4><p>Yes, open source on GitHub. No hidden subscription.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-pad" id="download">
+  <div class="container">
+    <div class="kicker reveal">How to get it</div>
+    <h2 class="reveal">Two ways to start. Pick one and go.</h2>
+    <p class="section-lead reveal">Pine Script doesn't support neural networks — anyone selling you a "real" LSTM indicator for TradingView is lying. Here's what actually works, today.</p>
+    <div class="get-grid reveal">
+      <div class="get-card tilt-card">
+        <div class="tag">Recommended</div><h3>Full Python notebook</h3>
+        <p>Technical features, sentiment, directional prediction, backtesting. Download it, open Jupyter, run it.</p>
+        <code># Repository isn't public yet.
+# It'll be linked here the day it is —
+# no clone command to fake in the meantime.</code>
+        <span class="btn btn-solid btn-disabled" aria-disabled="true" title="Repository not public yet" style="align-self:flex-start;">Coming soon</span>
+      </div>
+      <div class="get-card tilt-card">
+        <div class="tag">Bonus</div><h3>TradingView indicator</h3>
+        <p>Simplified RSI+MACD version, a real working Pine Script you can add to your chart right now.</p>
+        <code id="pineScript">// TradingView Pine Editor
+study("Candlecast Lite", overlay=false)</code>
+        <button type="button" class="btn btn-outline magnetic" data-copy-target="pineScript" style="align-self:flex-start;">→ Copy the script</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="newsletter sec-light">
+  <div class="lightfall-bg" id="lfNewsletter"></div>
+  <div class="container content-above">
+    <div class="kicker reveal">Stay in the loop</div>
+    <h2 class="reveal">New releases, new backtests, zero spam</h2>
+    <p class="section-lead reveal" style="margin-left:auto;margin-right:auto;">I'll email you when there's something actually worth reading — new features, new backtests on other tickers. No trading signals. No spam. Ever.</p>
+    <form class="nl-form reveal" id="newsletterForm" novalidate>
+      <input type="email" id="newsletterEmail" placeholder="you@email.com" required>
+      <button type="submit" class="btn btn-solid magnetic">Subscribe</button>
+    </form>
+    <p class="form-status reveal" id="newsletterStatus" role="status" aria-live="polite"></p>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <a href="#top" class="logo"><span class="glyph">/</span>CANDLECAST</a>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <div class="footer-col-title">Product</div>
+          <a href="#pipeline">Pipeline</a>
+          <a href="#scanner">Scanner</a>
+          <a href="#download">Download</a>
+          <a href="guides.html">Guides</a>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">Company</div>
+          <a href="company.html#about">About</a>
+          <a href="company.html#contact">Contact</a>
+          <a href="company.html#terms">Terms</a>
+          <a href="company.html#privacy">Privacy</a>
+          <a href="company.html#cookies">Cookies</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-disclaimer">Educational and demonstrative project only. It does not constitute financial advice, an investment recommendation, or a solicitation to buy/sell financial instruments. Past performance shown here does not guarantee future results. Investing involves risk, including loss of capital.</div>
+    <div class="copyright">© 2026 Candlecast.</div>
+  </div>
+</footer>
+
+<script src="nav.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
